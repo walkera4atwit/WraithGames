@@ -37,7 +37,7 @@ public final Tile[][] tileArray = new Tile[5][5];
 		arg0.setTitle("Field test");
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		grid.setMinSize(500, 500);
-		
+		//.
 		//Image rect = new Image(new FileInputStream("https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjVkPOwuIPmAhXCqp4KHdWdAZ0QjRx6BAgBEAQ&url=https%3A%2F%2Fwww.dunnedwards.com%2Fcolors%2Fbrowser%2Fde6157&psig=AOvVaw08nC_EqQhWe7sdXCFb3Udv&ust=1574705262411509"));
 		//ImageView rectangle =  new ImageView(rect);
 		//BackgroundFill fill = new BackgroundFill(new Color(.66, .6, .45, 1), new CornerRadii(0), new Insets(10,10,10,10));
@@ -60,7 +60,7 @@ public final Tile[][] tileArray = new Tile[5][5];
 		}
 		Circle circle = new Circle();
 		circle.setRadius(50);
-		circle.setFill(Color.BLACK);
+		//circle.setFill(Color.BLACK);
 		//grid.add(circle, 0, 0);
 		//Group root = new Group(circle);
 		
