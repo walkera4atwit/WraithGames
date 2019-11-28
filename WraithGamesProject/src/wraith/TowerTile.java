@@ -16,6 +16,8 @@ public class TowerTile extends Tile {
 		super(x,y);
 		hasTower = false;
 		tileRect = new Rectangle(100, 100, new Color(.5,.72,.37,1));
+		tileRect.setX(x);
+		tileRect.setY(y);
 	}
 	
 	/*public TowerTile() {

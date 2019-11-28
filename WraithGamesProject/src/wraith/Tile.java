@@ -6,17 +6,20 @@ public class Tile {
 	public int xPos;
 	private int yPos;
 	public Rectangle tileRect;
+	
+	public Tile() {
+		tileRect = new Rectangle(xPos, yPos);
+	}
 	public Tile(int xPos, int yPos) {
 		this.xPos = xPos;
-		this.yPos = yPos;
+		this.yPos = yPos;	
 	}
 
-	public int getXPos() {
-		return xPos;
-	}
-	
 	public void setXPos(int newXPos) {
 		xPos = newXPos;
+	}
+	public int getXPos() {
+		return xPos;
 	}
 	
 	public int getYPos() {

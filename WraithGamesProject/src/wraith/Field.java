@@ -27,7 +27,7 @@ public final int[][] tileArrayInts = {
 		{0,1,0,1,0},
 		{0,1,0,1,0},
 		{0,1,0,1,0},
-		{1,0,0,1,1}
+		{0,0,0,1,1}
 		
 };
 public final Tile[][] tileArray = new Tile[5][5];
@@ -44,16 +44,15 @@ public final Tile[][] tileArray = new Tile[5][5];
 		//grid.setBackground(new Background(fill));
 		Group root = new Group();
 		
-		
+	
 		for(int i = 0; i<5; i++) {
 			for(int j = 0; j < 5; j++) {
 				if(tileArrayInts[i][j] == 0) {
-					tileArray[i][j] = new PathTile(i,j);
-					//grid.add(tileArray[i][j].tileRect, i, j);
+					tileArray[i][j] = new PathTile(i*100,j*100);
 					root.getChildren().add(tileArray[i][j].tileRect);
 				}
 				else {
-					tileArray[i][j] = new TowerTile(i,j);
+					tileArray[i][j] = new TowerTile(i*100,j*100);
 					//grid.add(tileArray[i][j].tileRect, i, j);
 					root.getChildren().add(tileArray[i][j].tileRect);
 				}
