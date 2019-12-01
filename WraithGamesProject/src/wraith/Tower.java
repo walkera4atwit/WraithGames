@@ -14,10 +14,10 @@ public class Tower {
 
 	//TODO: better upgrading system
 	public static void upgrade() {
-		level = level * 2;
-		atkSpeed = atkSpeed * 2;
-		range = range * 2;
-		damage = damage * 2;
+		level = level + 1; //set the level to add one
+		atkSpeed = atkSpeed * 2; //attack speed should be set to run every X seconds and the upgrade will be 3/4 X
+		range = range * 2; //have the range be increased by 50% (this.range *= 1.5)
+		damage = damage * 2; //I would say damage does not need to be increased because the attack speed will increase DPS
 
 	}
 
