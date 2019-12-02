@@ -71,18 +71,7 @@ public final Tile[][] tileArray = new Tile[5][5];
 		BackgroundImage backMap = new BackgroundImage(mapImage, null, null, null, null);
 		Background map = new Background(backMap);
 		grid.setBackground(map);
-		//mapView.setX(500);
-		//mapView.setY(500);
 		
-		//Group root = new Group(mapView);
-		
-		//Circle circle = new Circle();
-		//circle.setRadius(25);
-		//circle.setFill(Color.BLACK);
-		//grid.add(circle, 0, 0);
-		//Circle c2 = new Circle(25, Color.RED);
-		//grid.add(c2, 0, 0);
-		//Group root = new Group(circle);
 		
 		arg0.setScene(new Scene(grid, 500, 500));
 		arg0.show();
@@ -119,17 +108,17 @@ public final Tile[][] tileArray = new Tile[5][5];
 	 * @param enemy type of enemy sent
 	 * @param speed time to cross one tile (100px)
 	 */
-	public static void enemyPath(Circle enemy, double speed) {
+	public static void enemyPath(Enemy enemy, double speed) {
 		
-		TranslateTransition t1 = new TranslateTransition(Duration.millis(speed*4), enemy);
+		TranslateTransition t1 = new TranslateTransition(Duration.millis(speed*4), enemy.getNode());
 		t1.setByX(400);
-		TranslateTransition t2 = new TranslateTransition(Duration.millis(speed*2), enemy);
+		TranslateTransition t2 = new TranslateTransition(Duration.millis(speed*2), enemy.getNode());
 		t2.setByY(200);
-		TranslateTransition t3 = new TranslateTransition(Duration.millis(speed*4), enemy);
+		TranslateTransition t3 = new TranslateTransition(Duration.millis(speed*4), enemy.getNode());
 		t3.setByX(-400);
-		TranslateTransition t4 = new TranslateTransition(Duration.millis(speed*2), enemy);
+		TranslateTransition t4 = new TranslateTransition(Duration.millis(speed*2), enemy.getNode());
 		t4.setByY(200);
-		TranslateTransition t5 = new TranslateTransition(Duration.millis(speed*4), enemy);
+		TranslateTransition t5 = new TranslateTransition(Duration.millis(speed*4), enemy.getNode());
 		t5.setByX(500);
 		
 		SequentialTransition seqT = new SequentialTransition(t1,t2,t3,t4,t5);
@@ -155,11 +144,26 @@ public final Tile[][] tileArray = new Tile[5][5];
 		
 			Enemy sent = new Enemy(10,10,10,100,500,"Enemy");
 			grid.add(sent.getNode(),0,0);
-			enemyPath(sent.getNode(), sent.getSpeed());
+			enemyPath(sent, sent.getSpeed());
 			field.add(sent);
 			
 			
 		
+	}
+	public void attackT(Tower t, ArrayList<Enemy> field) {
+		for(int i = field.size()-1; i>= 0; i--) {
+			if(inRange(t,field.get(i))) {
+				t.attack(field.get(i));
+				return;
+			}
+		}
+	}
+	public boolean inRange(Tower t, Enemy e) {
+		double distance = Math.sqrt(Math.abs((t.getX()-e.getNode().getCenterX()) + (t.getY() - e.getNode().getCenterY())));
+		if(distance<=t.getAOE()) {
+			return true;
+		}
+		return false;
 	}
 
 }
