@@ -3,8 +3,7 @@ package wraith;
 import javafx.geometry.Insets;
 import java.awt.TextField;
 import java.io.FileInputStream;
-
-
+import java.util.ArrayList;
 
 import javafx.animation.*; 
 import javafx.application.Application;
@@ -19,6 +18,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -38,11 +38,11 @@ public final Tile[][] tileArray = new Tile[5][5];
 	@Override
 	public void start(Stage arg0) throws Exception {
 		GridPane grid = new GridPane();
+		
 		arg0.setTitle("Field test");
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		grid.setMinSize(500, 500);
-		grid.setVgap(5);
-		grid.setHgap(5);
+		
 		
 		
 		//BackgroundFill fill = new BackgroundFill(new Color(.66, .6, .45, 1), new CornerRadii(0), new Insets(10,10,10,10));
@@ -76,25 +76,50 @@ public final Tile[][] tileArray = new Tile[5][5];
 		
 		//Group root = new Group(mapView);
 		
-		Circle circle = new Circle();
-		circle.setRadius(25);
-		circle.setFill(Color.BLACK);
-		grid.add(circle, 0, 0);
-		Circle c2 = new Circle(25, Color.RED);
-		grid.add(c2, 0, 0);
+		//Circle circle = new Circle();
+		//circle.setRadius(25);
+		//circle.setFill(Color.BLACK);
+		//grid.add(circle, 0, 0);
+		//Circle c2 = new Circle(25, Color.RED);
+		//grid.add(c2, 0, 0);
 		//Group root = new Group(circle);
 		
 		arg0.setScene(new Scene(grid, 500, 500));
 		arg0.show();
+		ArrayList<Enemy> field = new ArrayList<Enemy>();
 		
-		enemyPath(circle, 500);
-		enemyPath(c2, 600);
+		AnimationTimer gameLoop = new AnimationTimer() {
+
+			@Override
+			//now = current frame timestamp in nanoseconds
+			public void handle(long now) {
+				if(now%20000 == 0) {
+					sendEnemies(true, field, grid);
+				}
+				
+			}
+			
+		};
+		gameLoop.start();
+//		for(int i = 0; i<3; i++) {
+//			sendEnemies(true, field, grid);
+//			synchronized(this) {
+//				this.wait(10000);
+//			}
+//		}
+		//enemyPath(circle, 500);
+		//enemyPath(c2, 600);
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
-	public static void enemyPath(Circle enemy, int speed) {
+	/**
+	 * 
+	 * @param enemy type of enemy sent
+	 * @param speed time to cross one tile (100px)
+	 */
+	public static void enemyPath(Circle enemy, double speed) {
 		
 		TranslateTransition t1 = new TranslateTransition(Duration.millis(speed*4), enemy);
 		t1.setByX(400);
@@ -110,6 +135,30 @@ public final Tile[][] tileArray = new Tile[5][5];
 		SequentialTransition seqT = new SequentialTransition(t1,t2,t3,t4,t5);
 		seqT.setDelay(Duration.millis(0));
 		seqT.play();
+		
+	}
+	
+	/*Idea:
+	*store path tiles in linked list, so that they are ordered by position on map 
+	*the enemyPath method will then translate the enemies one by one to each tile
+	*at each tile the position of the enemy is saved so the towers can retrieve it to attack
+	*/
+	/*
+	 *Idea 2:
+	 *get (x,y) position of enemy nodes (circles) and use that to attack
+	 *towers attack by check if (x,y) of each enemy fits into its range, then attacks
+	 *the field contains all enemies, enemies are removed from the field when they reach the end of the board or when their health reaches 0 
+	 */
+	
+	public void sendEnemies(boolean wave, ArrayList<Enemy> field, GridPane grid) {
+		
+		
+			Enemy sent = new Enemy(10,10,10,100,500,"Enemy");
+			grid.add(sent.getNode(),0,0);
+			enemyPath(sent.getNode(), sent.getSpeed());
+			field.add(sent);
+			
+			
 		
 	}
 
