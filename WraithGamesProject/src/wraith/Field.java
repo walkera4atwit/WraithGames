@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import java.awt.TextField;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Timer;
 
 import javafx.animation.*; 
 import javafx.application.Application;
@@ -25,6 +26,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.shape.*;
 
+
 public class Field extends Application{
 public final int[][] tileArrayInts = {
 		{0,1,0,0,0},
@@ -37,7 +39,7 @@ public final int[][] tileArrayInts = {
 public final Tile[][] tileArray = new Tile[5][5];
 	@Override
 	public void start(Stage arg0) throws Exception {
-		GridPane grid = new GridPane();
+		Pane grid = new Pane();
 		
 		arg0.setTitle("Field test");
 		grid.setPadding(new Insets(10, 10, 10, 10));
@@ -75,29 +77,48 @@ public final Tile[][] tileArray = new Tile[5][5];
 		
 		arg0.setScene(new Scene(grid, 500, 500));
 		arg0.show();
-		ArrayList<Enemy> field = new ArrayList<Enemy>();
 		
+		Tower test = new Tower(50, 150, 200);
+		grid.getChildren().add(test.getNode());
+		Timer timer = new Timer();
+		ArrayList<Enemy> field = new ArrayList<Enemy>();
+		//Game ends at 10 minutes
 		AnimationTimer gameLoop = new AnimationTimer() {
 
 			@Override
 			//now = current frame timestamp in nanoseconds
 			public void handle(long now) {
-				if(now%20000 == 0) {
-					sendEnemies(true, field, grid);
+				double second = (double) now/1000000000;
+				int rand = (int) (Math.random() *240)+1;
+				if(rand == 1) {
+					sendEnemies(true, field, grid);	
 				}
+			}
+			
+		};
+		AnimationTimer towerLoop = new AnimationTimer() {
+
+			@Override
+			public void handle(long now) {
+				TranslateTransition tt = new TranslateTransition(Duration.millis(1000), new Circle(10, Color.BLUE));
+				tt.setByY(-300);
+				tt.play();
+				synchronized(this) {
+					try {
+						this.wait(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				attackT(test, field);
 				
 			}
 			
 		};
+		towerLoop.start();
 		gameLoop.start();
-//		for(int i = 0; i<3; i++) {
-//			sendEnemies(true, field, grid);
-//			synchronized(this) {
-//				this.wait(10000);
-//			}
-//		}
-		//enemyPath(circle, 500);
-		//enemyPath(c2, 600);
+
 	}
 	
 	public static void main(String[] args) {
@@ -132,6 +153,7 @@ public final Tile[][] tileArray = new Tile[5][5];
 	*the enemyPath method will then translate the enemies one by one to each tile
 	*at each tile the position of the enemy is saved so the towers can retrieve it to attack
 	*/
+	
 	/*
 	 *Idea 2:
 	 *get (x,y) position of enemy nodes (circles) and use that to attack
@@ -139,11 +161,11 @@ public final Tile[][] tileArray = new Tile[5][5];
 	 *the field contains all enemies, enemies are removed from the field when they reach the end of the board or when their health reaches 0 
 	 */
 	
-	public void sendEnemies(boolean wave, ArrayList<Enemy> field, GridPane grid) {
+	public void sendEnemies(boolean wave, ArrayList<Enemy> field, Pane grid) {
 		
 		
-			Enemy sent = new Enemy(10,10,10,100,500,"Enemy");
-			grid.add(sent.getNode(),0,0);
+			Enemy sent = new Enemy(10,10,10,100,1000,"Enemy");
+			grid.getChildren().add(sent.getNode());
 			enemyPath(sent, sent.getSpeed());
 			field.add(sent);
 			
@@ -151,6 +173,7 @@ public final Tile[][] tileArray = new Tile[5][5];
 		
 	}
 	public void attackT(Tower t, ArrayList<Enemy> field) {
+		
 		for(int i = field.size()-1; i>= 0; i--) {
 			if(inRange(t,field.get(i))) {
 				t.attack(field.get(i));
