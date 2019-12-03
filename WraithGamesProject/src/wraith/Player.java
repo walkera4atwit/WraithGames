@@ -9,13 +9,27 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Player extends Application{
-	double hp=100;
+	int hp=100;
 	boolean hellMode = false;
 	boolean pause = false;
 	String name;
 	int bank;
 	int waveNumber;
 	int gameSpeed;
+	
+	public Player(int hp, String name) {
+		this.hp=hp;
+		this.name=name;
+	}
+	
+	public int getHp() {
+		return hp;
+	}
+
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+
 	public static void main(String[] args) {
 		launch(args);
 		

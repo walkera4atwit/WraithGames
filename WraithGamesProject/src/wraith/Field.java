@@ -5,6 +5,7 @@ import java.awt.TextField;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import javafx.animation.*; 
 import javafx.application.Application;
@@ -66,6 +67,7 @@ public final Tile[][] tileArray = new Tile[5][5];
 				}
 			}
 		}
+		Player player = new Player(100, "Test");
 		Group g = new Group();
 		FileInputStream file = new FileInputStream("C:\\Images\\map.png");
 		Image mapImage = new Image(file);
@@ -78,45 +80,52 @@ public final Tile[][] tileArray = new Tile[5][5];
 		arg0.setScene(new Scene(grid, 500, 500));
 		arg0.show();
 		
-		Tower test = new Tower(50, 150, 200);
-		grid.getChildren().add(test.getNode());
+		Tower test = new Tower(50, 150, 300, 30);
+		Tower test2 = new Tower(150, 350, 300, 30);
+		System.out.printf("hp: %d%n", player.getHp());
 		Timer timer = new Timer();
 		ArrayList<Enemy> field = new ArrayList<Enemy>();
+		ArrayList<Tower> towers = new ArrayList<Tower>();
+		towers.add(test);
+		towers.add(test2);
+		for(Tower t : towers) {
+			grid.getChildren().add(t.getNode());
+		}
 		//Game ends at 10 minutes
 		AnimationTimer gameLoop = new AnimationTimer() {
-
+			long lastAttack = 0;
 			@Override
 			//now = current frame timestamp in nanoseconds
 			public void handle(long now) {
-				double second = (double) now/1000000000;
+				
+				
 				int rand = (int) (Math.random() *240)+1;
 				if(rand == 1) {
 					sendEnemies(true, field, grid);	
 				}
-			}
-			
-		};
-		AnimationTimer towerLoop = new AnimationTimer() {
-
-			@Override
-			public void handle(long now) {
-				TranslateTransition tt = new TranslateTransition(Duration.millis(1000), new Circle(10, Color.BLUE));
-				tt.setByY(-300);
-				tt.play();
-				synchronized(this) {
-					try {
-						this.wait(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+				for(Tower t : towers) {
+					
+					if(now-t.getLastAttack()>1000000000) {
+						attackT(t, field, grid);
+						t.setLastAttack(now);
 					}
 				}
-				attackT(test, field);
+				for(int i = 0; i < field.size(); i++) {
+					if(field.get(i).attackIfFinished(player)) {
+						System.out.printf("hp: %d%n", player.getHp());
+						grid.getChildren().remove(field.get(i).getNode());
+						field.remove(i);
+						i--;
+						
+					}
+				}
 				
 			}
 			
 		};
-		towerLoop.start();
+		
+		
+		
 		gameLoop.start();
 
 	}
@@ -164,7 +173,7 @@ public final Tile[][] tileArray = new Tile[5][5];
 	public void sendEnemies(boolean wave, ArrayList<Enemy> field, Pane grid) {
 		
 		
-			Enemy sent = new Enemy(10,10,10,100,1000,"Enemy");
+			Enemy sent = new Enemy(1,10,10,100,1000,"Enemy");
 			grid.getChildren().add(sent.getNode());
 			enemyPath(sent, sent.getSpeed());
 			field.add(sent);
@@ -172,21 +181,42 @@ public final Tile[][] tileArray = new Tile[5][5];
 			
 		
 	}
-	public void attackT(Tower t, ArrayList<Enemy> field) {
+	public void attackT(Tower t, ArrayList<Enemy> field, Pane grid) {
 		
-		for(int i = field.size()-1; i>= 0; i--) {
+		for(int i = 0; i<field.size(); i++) {
 			if(inRange(t,field.get(i))) {
+				Circle c = new Circle(10, Color.BLUE);
+				c.setCenterX(t.getX());
+				c.setCenterY(t.getY());
+				grid.getChildren().add(c);
+				TranslateTransition tt = new TranslateTransition(Duration.millis(250), c);
+				tt.setByY(field.get(i).getNode().getTranslateY()-t.getY());
+				tt.setByX(field.get(i).getNode().getTranslateX()-t.getX());
+				FadeTransition ft = new FadeTransition(Duration.millis(1), c);
+				ft.setFromValue(1);
+				ft.setToValue(0);
+				SequentialTransition seqT = new SequentialTransition(c,tt,ft);
+			
+				//grid.getChildren().remove(c);
+				seqT.play();
 				t.attack(field.get(i));
+				if(field.get(i).checkHealth(field)) {
+					grid.getChildren().remove(field.get(i).getNode());
+					field.remove(i);
+				}
 				return;
 			}
 		}
 	}
 	public boolean inRange(Tower t, Enemy e) {
-		double distance = Math.sqrt(Math.abs((t.getX()-e.getNode().getCenterX()) + (t.getY() - e.getNode().getCenterY())));
+		double distance = Math.sqrt(Math.abs((t.getX()-e.getNode().getTranslateX())*(t.getX()-e.getNode().getTranslateX()) + (t.getY() - e.getNode().getTranslateY())*(t.getY() - e.getNode().getTranslateY())));
 		if(distance<=t.getAOE()) {
 			return true;
 		}
 		return false;
+	}
+	public void enemyKilled() {
+		
 	}
 
 }

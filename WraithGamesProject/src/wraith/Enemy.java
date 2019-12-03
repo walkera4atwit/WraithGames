@@ -100,8 +100,12 @@ public class Enemy {
 	 * @param p will be called with 'this' in player class
 	 * called "endReached()" in class chart
 	 */
-	public void attack(Player p) {
-		p.damage(this.damage);
+	public boolean attackIfFinished(Player p) {
+		if(this.getNode().getTranslateX()>400) {
+			p.damage(this.damage);
+			return true;
+		}
+		return false;
 	}
 
 	public void move(ArrayList<Tile> pathPositions) {
@@ -112,7 +116,6 @@ public class Enemy {
 
 	public boolean checkHealth(ArrayList<Enemy> field) {
 		if(this.hp<=0) {
-			field.remove(this);
 			return true;
 		}
 		return false;

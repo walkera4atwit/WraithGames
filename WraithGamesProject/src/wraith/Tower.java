@@ -1,14 +1,33 @@
 package wraith;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
 public class Tower {
+	private double x;
+	private double y;
+	private long lastAttack;
+	private int damage;
+	private int aoe;
+	
+	public String type;
+	
+	private final Circle node = new Circle(25,Color.BLACK);
 	public static int atkSpeed;
 	public static int level;
 	public static int range;
-	public static int damage;
-	public int aoe;
-	public String type;
-
-	public static void attack(Enemy e) {
+	
+	
+	public Tower(double x, double y, int aoe, int dmg) {
+		this.x=x;
+		this.y=y;
+		this.aoe=aoe;
+		this.damage= dmg;
+		node.setCenterX(x);
+		node.setCenterY(y);
+		this.lastAttack = 0;
+	}
+	public void attack(Enemy e) {
 		e.hp = e.hp - damage;
 	}
 
@@ -17,7 +36,7 @@ public class Tower {
 		level = level + 1; //set the level to add one
 		atkSpeed = atkSpeed * 2; //attack speed should be set to run every X seconds and the upgrade will be 3/4 X
 		range = range * 2; //have the range be increased by 50% (this.range *= 1.5)
-		damage = damage * 2; //I would say damage does not need to be increased because the attack speed will increase DPS
+		//damage = damage * 2; //I would say damage does not need to be increased because the attack speed will increase DPS
 
 	}
 
@@ -50,5 +69,27 @@ public class Tower {
 	public String getType() {
 		return type;
 	}
+	public double getX() {
+		return x;
+	}
+	public void setX(double x) {
+		this.x = x;
+	}
+	public double getY() {
+		return y;
+	}
+	public void setY(double y) {
+		this.y = y;
+	}
+	public Circle getNode() {
+		return this.node;
+	}
+	public long getLastAttack() {
+		return lastAttack;
+	}
+	public void setLastAttack(long lastAttack) {
+		this.lastAttack = lastAttack;
+	}
+	
 
 }
