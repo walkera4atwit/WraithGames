@@ -1,6 +1,9 @@
 package wraith;
 import java.util.ArrayList;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
 public class Enemy {
 
 	//Added damage
@@ -12,9 +15,11 @@ public class Enemy {
 	public double hp; 
 	public double speed;
 	public String type;
-
+	
+	final private Circle node = new Circle(25, Color.RED);
+	
 	public Enemy() {
-
+		
 		this.damage = 0;
 		this.rewardOnDeath = 0;
 		this.currTile = new PathTile(0, 0);
@@ -24,15 +29,16 @@ public class Enemy {
 		this.type = "super";
 	}
 
-	public Enemy(int damage, int rewardOnDeath, PathTile currTile, int level, double hp, double speed, String type) {
+	public Enemy(int damage, int rewardOnDeath, int level, double hp, double speed, String type) {
 
 		this.damage = damage;
 		this.rewardOnDeath = rewardOnDeath;
-		this.currTile = currTile;
 		this.level = level;
 		this.hp = hp;
 		this.speed = speed;
 		this.type = type;
+		node.setCenterX(50);
+		node.setCenterY(50);
 	}
 
 	/**
@@ -55,7 +61,9 @@ public class Enemy {
 	}
 
 	 */
-
+	public Circle getNode() {
+		return this.node;
+	}
 	public int getLevel() {
 		return level;
 	}
@@ -102,7 +110,13 @@ public class Enemy {
 
 	}
 
-	
+	public boolean checkHealth(ArrayList<Enemy> field) {
+		if(this.hp<=0) {
+			field.remove(this);
+			return true;
+		}
+		return false;
+	}
 	public void damage(int dmg) {
 		hp-=dmg;
 
