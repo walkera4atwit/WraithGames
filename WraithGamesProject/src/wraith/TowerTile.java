@@ -15,9 +15,9 @@ public class TowerTile extends Tile {
 		//Some kind of basic dirt image
 		super(x,y);
 		hasTower = false;
-		tileRect = new Rectangle(100, 100, new Color(.5,.72,.37,1));
-		tileRect.setX(x);
-		tileRect.setY(y);
+		this.node = new Rectangle(100, 100, new Color(.5,.72,.37,1));
+		this.node.setX(x);
+		this.node.setY(y);
 	}
 	
 	/*public TowerTile() {

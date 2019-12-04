@@ -9,11 +9,13 @@ import java.util.TimerTask;
 
 import javafx.animation.*; 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -34,7 +36,7 @@ public final int[][] tileArrayInts = {
 		{0,1,0,1,0},
 		{0,1,0,1,0},
 		{0,1,0,1,0},
-		{1,0,0,1,1}
+		{0,0,0,1,0}
 		
 };
 public final Tile[][] tileArray = new Tile[5][5];
@@ -61,9 +63,9 @@ public final Tile[][] tileArray = new Tile[5][5];
 					//root.getChildren().add(tileArray[i][j].tileRect);
 				}
 				else {
-					tileArray[i][j] = new TowerTile(i,j);
-					//grid.add(tileArray[i][j].tileRect, i, j);
-					//root.getChildren().add(tileArray[i][j].tileRect);
+					tileArray[i][j] = new TowerTile(i*100,j*100);
+					grid.getChildren().add(tileArray[i][j].getNode());
+					
 				}
 			}
 		}
@@ -75,25 +77,40 @@ public final Tile[][] tileArray = new Tile[5][5];
 		BackgroundImage backMap = new BackgroundImage(mapImage, null, null, null, null);
 		Background map = new Background(backMap);
 		grid.setBackground(map);
-		
+		ArrayList<Enemy> field = new ArrayList<Enemy>();
+		ArrayList<Tower> towers = new ArrayList<Tower>();
 		
 		arg0.setScene(new Scene(grid, 500, 500));
 		arg0.show();
-		
+		EventHandler<MouseEvent> placeTower = new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if(inTowerTile(event.getX(), event.getY())) {
+					towers.add(new Tower(event.getX(), event.getY(), 300, 30));
+					grid.getChildren().add(towers.get(towers.size()-1).getNode());
+				}
+				
+			}
+			
+		};
+		grid.addEventHandler(MouseEvent.MOUSE_CLICKED, placeTower);
 		Tower test = new Tower(50, 150, 300, 30);
 		Tower test2 = new Tower(150, 350, 300, 30);
 		System.out.printf("hp: %d%n", player.getHp());
 		Timer timer = new Timer();
-		ArrayList<Enemy> field = new ArrayList<Enemy>();
-		ArrayList<Tower> towers = new ArrayList<Tower>();
-		towers.add(test);
-		towers.add(test2);
+		
+		//towers.add(test);
+		//towers.add(test2);
 		for(Tower t : towers) {
 			grid.getChildren().add(t.getNode());
 		}
 		//Game ends at 10 minutes
+		
+		//MouseEvent mouse = new MouseEvent();
+		
 		AnimationTimer gameLoop = new AnimationTimer() {
-			long lastAttack = 0;
+			
 			@Override
 			//now = current frame timestamp in nanoseconds
 			public void handle(long now) {
@@ -115,6 +132,10 @@ public final Tile[][] tileArray = new Tile[5][5];
 						System.out.printf("hp: %d%n", player.getHp());
 						grid.getChildren().remove(field.get(i).getNode());
 						field.remove(i);
+						if(player.getHp()==0) {
+							System.out.printf("Game Over");
+							
+						}
 						i--;
 						
 					}
@@ -127,6 +148,7 @@ public final Tile[][] tileArray = new Tile[5][5];
 		
 		
 		gameLoop.start();
+		
 
 	}
 	
@@ -180,6 +202,12 @@ public final Tile[][] tileArray = new Tile[5][5];
 			
 			
 		
+	}
+	public boolean inTowerTile(double x, double y) {
+		if((x>0&&x<400&&y>100&y<200)  || (x>100&&x<500&&y>300&&y<400)) {
+			return true;
+		}
+		return false;
 	}
 	public void attackT(Tower t, ArrayList<Enemy> field, Pane grid) {
 		

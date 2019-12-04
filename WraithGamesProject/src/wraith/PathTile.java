@@ -12,9 +12,9 @@ public class PathTile extends Tile{
 	
 	public PathTile(int xPos, int yPos) {
 		super(xPos, yPos);
-		tileRect = new Rectangle(100, 100, new Color(.66, .6, .45, 1));
-		tileRect.setX(xPos);
-		tileRect.setY(yPos);
+		this.node = new Rectangle(100, 100, new Color(.66, .6, .45, 1));
+		this.node.setX(xPos);
+		this.node.setY(yPos);
 	}
 
 	public void addEnemy(Enemy enemy) {

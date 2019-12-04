@@ -5,10 +5,10 @@ import javafx.scene.shape.Rectangle;
 public class Tile {
 	public int xPos;
 	private int yPos;
-	public Rectangle tileRect;
+	protected Rectangle node;
 	
 	public Tile() {
-		tileRect = new Rectangle(xPos, yPos);
+		node = new Rectangle(xPos, yPos);
 	}
 	public Tile(int xPos, int yPos) {
 		this.xPos = xPos;
@@ -29,4 +29,11 @@ public class Tile {
 	public void setYPos(int newYPos) {
 		yPos= newYPos;
 	}
+	public Rectangle getNode() {
+		return node;
+	}
+	public void setNode(Rectangle node) {
+		this.node = node;
+	}
+	
 }
