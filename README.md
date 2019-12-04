@@ -4,6 +4,10 @@
 
 A tower defense game that challenges the players with waves of enemies to defend their center of operation from.  This will include hidden cheat codes that players can activate.
 
+### Install
+
+
+### Run
 
 ## Deliverables
 
@@ -19,6 +23,9 @@ User can click the towers to bring up an upgrade UI,
 User can choose from UI option at the bottom of the screen to activate enhanced speed,
 User can choose to freeze between waves, which will freeze wave progression,
 User can input hidden codes(Undecided yet) to activate cheats, such as infinite funds, skipping waves, etc.
+
+## References
+
 
 ## Team members
 
