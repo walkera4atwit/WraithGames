@@ -3,7 +3,6 @@ package wraith;
 import javafx.geometry.Insets;
 import java.awt.TextField;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -88,12 +87,7 @@ public final Tile[][] tileArray = new Tile[5][5];
 			@Override
 			public void handle(MouseEvent event) {
 				if(inTowerTile(event.getX(), event.getY())) {
-					try {
-						towers.add(new Tower(event.getX()-25, event.getY()-25, 300, 30));
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					towers.add(new Tower(event.getX(), event.getY(), 300, 30));
 					grid.getChildren().add(towers.get(towers.size()-1).getNode());
 				}
 				
@@ -101,11 +95,13 @@ public final Tile[][] tileArray = new Tile[5][5];
 			
 		};
 		grid.addEventHandler(MouseEvent.MOUSE_CLICKED, placeTower);
-		
+		Tower test = new Tower(50, 150, 300, 30);
+		Tower test2 = new Tower(150, 350, 300, 30);
 		System.out.printf("hp: %d%n", player.getHp());
+		Timer timer = new Timer();
 		
-		
-		
+		//towers.add(test);
+		//towers.add(test2);
 		for(Tower t : towers) {
 			grid.getChildren().add(t.getNode());
 		}
@@ -122,12 +118,7 @@ public final Tile[][] tileArray = new Tile[5][5];
 				
 				int rand = (int) (Math.random() *240)+1;
 				if(rand == 1) {
-					try {
-						sendEnemies(true, field, grid);
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}	
+					sendEnemies(true, field, grid);	
 				}
 				for(Tower t : towers) {
 					
@@ -172,25 +163,17 @@ public final Tile[][] tileArray = new Tile[5][5];
 	public static void enemyPath(Enemy enemy, double speed) {
 		
 		TranslateTransition t1 = new TranslateTransition(Duration.millis(speed*4), enemy.getNode());
-		t1.setToX(400);
+		t1.setByX(400);
 		TranslateTransition t2 = new TranslateTransition(Duration.millis(speed*2), enemy.getNode());
-		t2.setToY(200);
+		t2.setByY(200);
 		TranslateTransition t3 = new TranslateTransition(Duration.millis(speed*4), enemy.getNode());
-		t3.setToX(0);
+		t3.setByX(-400);
 		TranslateTransition t4 = new TranslateTransition(Duration.millis(speed*2), enemy.getNode());
-		t4.setToY(400);
+		t4.setByY(200);
 		TranslateTransition t5 = new TranslateTransition(Duration.millis(speed*4), enemy.getNode());
-		t5.setToX(500);
+		t5.setByX(500);
 		
-		RotateTransition r1 = new RotateTransition(Duration.millis(1), enemy.getNode());
-		r1.setByAngle(90);
-		RotateTransition r2 = new RotateTransition(Duration.millis(1), enemy.getNode());
-		r2.setByAngle(90);
-		RotateTransition r3 = new RotateTransition(Duration.millis(1), enemy.getNode());
-		r3.setByAngle(-90);
-		RotateTransition r4 = new RotateTransition(Duration.millis(1), enemy.getNode());
-		r4.setByAngle(-90);
-		SequentialTransition seqT = new SequentialTransition(t1,r1,t2,r2,t3,r3,t4,r4,t5);
+		SequentialTransition seqT = new SequentialTransition(t1,t2,t3,t4,t5);
 		seqT.setDelay(Duration.millis(0));
 		seqT.play();
 		
@@ -209,10 +192,10 @@ public final Tile[][] tileArray = new Tile[5][5];
 	 *the field contains all enemies, enemies are removed from the field when they reach the end of the board or when their health reaches 0 
 	 */
 	
-	public void sendEnemies(boolean wave, ArrayList<Enemy> field, Pane grid) throws FileNotFoundException {
+	public void sendEnemies(boolean wave, ArrayList<Enemy> field, Pane grid) {
 		
 		
-			Skeleton sent = new Skeleton(1,10,10,100,1000,"Enemy");
+			Enemy sent = new Enemy(1,10,10,100,1000,"Enemy");
 			grid.getChildren().add(sent.getNode());
 			enemyPath(sent, sent.getSpeed());
 			field.add(sent);
