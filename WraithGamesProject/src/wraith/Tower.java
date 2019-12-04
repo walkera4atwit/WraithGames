@@ -1,9 +1,14 @@
 package wraith;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Tower {
+public class Tower{
 	private double x;
 	private double y;
 	private long lastAttack;
@@ -12,20 +17,21 @@ public class Tower {
 	
 	public String type;
 	
-	private final Circle node = new Circle(25,Color.BLACK);
+	protected ImageView node;
 	public static int atkSpeed;
 	public static int level;
 	public static int range;
 	
 	
-	public Tower(double x, double y, int aoe, int dmg) {
-		this.x=x;
-		this.y=y;
+	public Tower(double x, double y, int aoe, int dmg) throws FileNotFoundException {
+		this.x=x+25;
+		this.y=y+25;
 		this.aoe=aoe;
 		this.damage= dmg;
-		node.setCenterX(x);
-		node.setCenterY(y);
 		this.lastAttack = 0;
+		node = new ImageView(new Image(new FileInputStream("C:\\Images\\tower.png")));
+		node.setX(x);
+		node.setY(y);
 	}
 	public void attack(Enemy e) {
 		e.hp = e.hp - damage;
@@ -81,7 +87,7 @@ public class Tower {
 	public void setY(double y) {
 		this.y = y;
 	}
-	public Circle getNode() {
+	public ImageView getNode() {
 		return this.node;
 	}
 	public long getLastAttack() {

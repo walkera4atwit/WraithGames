@@ -1,6 +1,7 @@
 package wraith;
 import java.util.ArrayList;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -16,7 +17,7 @@ public class Enemy {
 	public double speed;
 	public String type;
 	
-	final private Circle node = new Circle(25, Color.RED);
+	protected ImageView node;
 	
 	public Enemy() {
 		
@@ -26,6 +27,7 @@ public class Enemy {
 		this.level = 0;
 		this.hp = 0;
 		this.speed = 0;
+		node = new ImageView();
 		this.type = "super";
 	}
 
@@ -37,8 +39,7 @@ public class Enemy {
 		this.hp = hp;
 		this.speed = speed;
 		this.type = type;
-		node.setCenterX(50);
-		node.setCenterY(50);
+		
 	}
 
 	/**
@@ -61,7 +62,10 @@ public class Enemy {
 	}
 
 	 */
-	public Circle getNode() {
+	public void setNode(ImageView node) {
+		this.node = node;
+	}
+	public ImageView getNode() {
 		return this.node;
 	}
 	public int getLevel() {
