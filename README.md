@@ -20,14 +20,13 @@ A tower defense game that challenges the players with waves of enemies to defend
 3. This will bring you to the "Play!" screen
 4. Press the "Play!" button to begin the game
 
-## Features 
+### Features 
 
-User can enters their name, selects difficulty and clicks “Play”,
-User can drag and drop tower icons to create defenses,
-User can click the towers to bring up an upgrade UI,
-User can choose from UI option at the bottom of the screen to activate enhanced speed,
-User can choose to freeze between waves, which will freeze wave progression,
-User can input hidden codes(Undecided yet) to activate cheats, such as infinite funds, skipping waves, etc.
+User is able to hit "Play!" on the start screen
+User is able to click "Place Towers" and drag and drop towers to create defenses
+User can hit "cancel" to deselect the placing of towers
+User will defend themselves for 10 minutes or until they lose 100 health, where they will be brought to a Game Over screen
+User is able to click "Quit" to exit the program
 
 ## Demo Video
 
