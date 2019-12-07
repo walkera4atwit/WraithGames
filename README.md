@@ -20,13 +20,13 @@ A tower defense game that challenges the players with waves of enemies to defend
 3. This will bring you to the "Play!" screen
 4. Press the "Play!" button to begin the game
 
-### Features 
+## Features 
 
-User is able to hit "Play!" on the start screen
-User is able to click "Place Towers" and drag and drop towers to create defenses
-User can hit "cancel" to deselect the placing of towers
-User will defend themselves for 10 minutes or until they lose 100 health, where they will be brought to a Game Over screen
-User is able to click "Quit" to exit the program
+User is able to hit "Play!" on the start screen, 
+User is able to click "Place Towers" and drag and drop towers to create defenses, 
+User can hit "cancel" to deselect the placing of towers, 
+User will defend themselves for 10 minutes or until they lose 100 health, where they will be brought to a Game Over screen, 
+User is able to click "Quit" to exit the program.
 
 ## Demo Video
 
