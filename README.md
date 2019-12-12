@@ -4,6 +4,8 @@
 
 A tower defense game that challenges the players with waves of enemies to defend their center of operation from.  This will include hidden cheat codes that players can activate.
 
+## Getting Started
+
 ### Install
 
 1. Click "clone or download" and copy the GITHUB link to your clipboard
@@ -34,6 +36,8 @@ User is able to click "Quit" to exit the program.
 
 ## References
 
+https://www.oracle.com/java/, 
+https://openjfx.io/
 
 ## Team members
 
