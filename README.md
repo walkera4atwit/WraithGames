@@ -31,7 +31,7 @@ User will defend themselves for 10 minutes or until they lose 100 health, where 
 User is able to click "Quit" to exit the program.
 
 ## Demo Video
-
+Video link: https://youtu.be/6-xxPjCFTDs
 
 
 ## References
